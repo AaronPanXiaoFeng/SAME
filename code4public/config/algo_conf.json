@@ -1,0 +1,51 @@
+{
+  "CTR": {
+    "model_type": "promotion_net",
+    "prob": "68",
+    "modelx": {
+      "model_hyperparameter": {
+        "activation": "lrelu",
+        "dnn_hidden_units": [256, 128, 64],
+        "bias_dnn_hidden_units": [256, 128, 64],
+        "need_dropout": true,
+        "dropout_rate": 0.5,
+        "dnn_l2_reg": 1e-5,
+        "atten_param": {
+          "atten_mode": "ln",
+          "residual_connection": true,
+          "attention_normalize": true,
+          "attention_l2_reg": 1e-5,
+          "sa_num_units": 128,
+          "sa_num_output_units": 128,
+          "ma_num_units": 128,
+          "ma_num_output_units": 128,
+          "num_heads": 8,
+          "seq_type": "concat"
+        },
+        "batch_norm": true,
+        "gate_hidden_units": [32, 16, 8],
+        "gate_weight_type": "concat",
+        "logits_hidden_units": [32]
+      }
+    },
+    "optimizer": {
+      "AdagradDecay": {
+        "scope": "Global",
+        "lr_func": "cold_start",
+        "learning_rate": 0.01,
+        "lrcs_init_lr": 0.001,
+        "lrcs_init_step": 200000,
+        "decay_step": 100000,
+        "decay_rate": 0.94,
+        "clip_gradients": 5.0,
+        "staircase": true
+      },
+      "batch_size": 256
+    },
+    "main_columns": "user_columns;item_columns",
+    "bias_columns": "bias_columns",
+    "seq_column_blocks": "clk_list:clk_length:user_attention_columns:item_attention_columns;",
+    "gate_columns": "gate_columns",
+    "expert_columns": "expert_1;expert_2"
+  }
+}
